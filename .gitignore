@@ -1,0 +1,13 @@
+.env
+
+node_modules
+
+dist
+
+npm-debug.log
+
+npm-shrinkwrap.json
+
+package-lock.json
+
+coverage
