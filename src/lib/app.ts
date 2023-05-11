@@ -1,5 +1,6 @@
 import express, { Express, Request, Response } from 'express';
 import dotenv from 'dotenv';
+import responseInterceptorMiddleware from '../middlerwares/responseInterceptorMiddleware';
 
 class App {
   private app: Express;
@@ -11,6 +12,7 @@ class App {
     this.app = express();
     this.setupMiddleware();
     this.setupRoutes();
+    this.errorHandling();
   }
 
   private setupMiddleware(): void {
@@ -18,6 +20,7 @@ class App {
     this.app.use(express.static('public'))
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: true }));
+    this.app.use(responseInterceptorMiddleware);
   }
 
   private setupRoutes(): void {
@@ -29,6 +32,22 @@ class App {
   public start(): void {
     this.app.listen(this.port, () => {
       console.log(`Server is running on port ${this.port}`);
+    });
+  }
+
+  public getApp(): Express {
+    return this.app;
+  }
+
+  public getPort(): number {
+    return this.port;
+  }
+
+  public errorHandling(): void {
+    this.app.use((req: Request, res: Response) => {
+      res.status(500).json({
+        message: 'Some Error Occurred',
+      });
     });
   }
 }
