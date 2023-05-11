@@ -15,6 +15,7 @@ class App {
 
   private setupMiddleware(): void {
     // Add any middleware you need here
+    this.app.use(express.static('public'))
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: true }));
   }
